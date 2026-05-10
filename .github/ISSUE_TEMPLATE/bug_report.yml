@@ -1,0 +1,177 @@
+name: Bug report
+description: Report a reproducible bug in spec-kit-token-budget
+title: "bug: "
+labels: ["bug", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug.
+        Please fill in every required field so we can reproduce and fix the issue quickly.
+
+  - type: dropdown
+    id: affected_area
+    attributes:
+      label: Affected area
+      description: Which command, component, or feature is misbehaving?
+      options:
+        - compact (speckit.token-budget.compact)
+        - scope (speckit.token-budget.scope)
+        - concise (speckit.token-budget.concise)
+        - usage (speckit.token-budget.usage)
+        - hooks (after_specify / after_plan / after_tasks / before_plan / before_tasks / before_implement)
+        - scripts (estimate_tokens / slim_output / compact_helper — bash or PowerShell)
+        - config (token-budget-config.yml)
+        - other
+    validations:
+      required: true
+
+  - type: input
+    id: extension_version
+    attributes:
+      label: Extension version
+      description: >
+        The version of spec-kit-token-budget. Run `/speckit.token-budget.usage`
+        or check `extension.yml` in your spec-kit extension directory.
+      placeholder: "e.g. 1.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: speckit_version
+    attributes:
+      label: spec-kit version
+      description: >
+        The version of the `specify` CLI. Run `specify --version`.
+      placeholder: "e.g. 0.3.1"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Linux
+        - WSL (Windows Subsystem for Linux)
+        - Windows (native)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: shell
+    attributes:
+      label: Shell
+      options:
+        - bash
+        - zsh
+        - PowerShell
+        - other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: agent
+    attributes:
+      label: AI agent / LLM
+      description: Which agent are you running spec-kit commands inside?
+      options:
+        - Claude Code
+        - GitHub Copilot
+        - Cursor
+        - Gemini CLI
+        - Windsurf
+        - Cline
+        - Roo Code
+        - Kilo Code
+        - Aider
+        - Codex CLI
+        - Tabnine
+        - Pi Coding Agent
+        - other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: token_counter
+    attributes:
+      label: Token counting method
+      description: >
+        Does `tiktoken` (Python) resolve successfully in your environment,
+        or is the chars/4 fallback used? Check with `python3 -c "import tiktoken"`.
+      options:
+        - tiktoken available (exact token counts)
+        - chars/4 fallback (tiktoken not installed)
+        - not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: Steps to reproduce
+      description: >
+        Provide the exact sequence of commands or actions that trigger the bug.
+        Include the slash command invocation, any arguments, and the state of
+        the SDD project at the time (which artifacts exist, whether
+        token-budget-config.yml is present, etc.).
+      placeholder: |
+        1. Open an SDD project that has spec.md and plan.md
+        2. Run `/speckit.token-budget.compact spec`
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual_behavior
+    attributes:
+      label: Actual behavior
+      description: What actually happened? Be as specific as possible.
+    validations:
+      required: true
+
+  - type: textarea
+    id: error_output
+    attributes:
+      label: Error output / logs
+      description: >
+        Paste any error messages, stack traces, or relevant terminal output here.
+        This field is optional but greatly speeds up diagnosis.
+      render: shell
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: >
+        Anything else that might help: your `token-budget-config.yml` (redact
+        sensitive values), relevant sections of the affected artifact, links to
+        related issues, or screenshots.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before submitting
+      options:
+        - label: >
+            I have searched [existing issues](https://github.com/tinesoft/spec-kit-token-budget/issues)
+            and this bug has not already been reported.
+          required: true
+        - label: >
+            I have read [CONTRIBUTING.md](https://github.com/tinesoft/spec-kit-token-budget/blob/main/CONTRIBUTING.md).
+          required: true
+        - label: >
+            I have reproduced the bug on the latest released version of
+            spec-kit-token-budget.
+          required: true

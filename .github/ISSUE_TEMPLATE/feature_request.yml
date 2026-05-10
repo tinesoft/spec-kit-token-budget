@@ -1,0 +1,96 @@
+name: Feature request
+description: Propose an improvement or new capability for spec-kit-token-budget
+title: "feat: "
+labels: ["enhancement", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting an improvement!
+
+        > **Tip:** For open-ended discussion or questions, please use
+        > [GitHub Discussions](https://github.com/tinesoft/spec-kit-token-budget/discussions)
+        > rather than an issue.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of the extension does this request relate to?
+      options:
+        - compact (speckit.token-budget.compact)
+        - scope (speckit.token-budget.scope)
+        - concise (speckit.token-budget.concise)
+        - usage (speckit.token-budget.usage)
+        - hooks (lifecycle hooks — auto-compact / auto-scope)
+        - scripts (estimate_tokens / slim_output / compact_helper — bash or PowerShell)
+        - config (token-budget-config.yml)
+        - new command
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or pain point
+      description: >
+        Is your feature request related to a problem you encounter?
+        Describe it clearly.
+      placeholder: "I'm frustrated when..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_solution
+    attributes:
+      label: Proposed solution
+      description: >
+        Describe the change you'd like to see. Be as specific as possible:
+        new command flags, config keys, script behavior, hook events, etc.
+      placeholder: "I would like..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: >
+        What workarounds or alternative designs did you consider, and why
+        did you rule them out?
+
+  - type: textarea
+    id: expected_impact
+    attributes:
+      label: Expected impact
+      description: >
+        Optionally quantify the benefit: estimated token savings per session,
+        workflow steps eliminated, number of agents or platforms affected, etc.
+      placeholder: |
+        - Estimated saving: ~2,000 tokens per /speckit.implement session
+        - Affects: all projects using aggressive compaction
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: >
+        Any other information: links to related issues or discussions,
+        reference implementations in other tools, or screenshots.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before submitting
+      options:
+        - label: >
+            I have searched [existing issues](https://github.com/tinesoft/spec-kit-token-budget/issues)
+            and [discussions](https://github.com/tinesoft/spec-kit-token-budget/discussions)
+            and this request has not already been proposed.
+          required: true
+        - label: >
+            I have read [CONTRIBUTING.md](https://github.com/tinesoft/spec-kit-token-budget/blob/main/CONTRIBUTING.md).
+          required: true

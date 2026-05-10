@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: CONTRIBUTING guide
+    url: https://github.com/tinesoft/spec-kit-token-budget/blob/main/CONTRIBUTING.md
+    about: >
+      Read this before opening an issue or pull request. It covers the
+      development workflow, commit conventions, and how to submit a PR.
+
+  - name: GitHub Discussions — questions & ideas
+    url: https://github.com/tinesoft/spec-kit-token-budget/discussions
+    about: >
+      Not a bug and not a concrete feature request? Start a discussion here
+      for general questions, usage help, workflow ideas, or anything else.

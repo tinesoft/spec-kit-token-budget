@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "nxCloudId": "69fe3a2fff4424b7a213cd14",
+  "release": {
+    "projects": [
+      "spec-kit-token-budget"
+    ],
+    "version": {
+      "conventionalCommits": true,
+      "fallbackCurrentVersionResolver": "disk"
+    },
+    "changelog": {
+      "git": {
+        "commit": true,
+        "tag": true,
+        "commitMessage": "chore(release): {version} [skip ci]",
+        "push": true
+      },
+      "workspaceChangelog": {
+        "createRelease": "github",
+        "file": "CHANGELOG.md"
+      },
+      "automaticFromRef": true
+    }
+  },
+  "analytics": false
+}

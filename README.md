@@ -276,4 +276,4 @@ want their effects outside the SDD workflow:
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Copyright (c) 2026-present Tine Kondo. Licensed under the [MIT](LICENSE) License.

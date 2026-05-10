@@ -1,0 +1,26 @@
+## NX infrastructure
+
+node_modules/
+.nx/
+tools/
+package.json
+package-lock.json
+nx.json
+project.json
+commitlint.config.mjs
+tmp/
+
+## Git and CI
+
+.github/
+.gitignore
+.husky/
+
+## Development docs
+
+CLAUDE.md
+CONTRIBUTING.md
+
+## AI
+
+.claude/

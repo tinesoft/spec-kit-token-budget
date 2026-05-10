@@ -1,0 +1,4 @@
+{
+  "name": "spec-kit-token-budget",
+  "$schema": "node_modules/nx/schemas/project-schema.json"
+}

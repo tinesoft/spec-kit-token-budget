@@ -1,0 +1,28 @@
+{
+  "name": "spec-kit-token-budget",
+  "version": "1.0.0",
+  "description": "Token Budget 💰 — a Spec Kit extension for token-efficient SDD",
+  "author": {
+    "name": "Tine Kondo"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tinesoft/spec-kit-token-budget.git"
+  },
+  "private": true,
+  "scripts": {
+    "prepare": "husky",
+    "release": "tsx tools/scripts/release.ts",
+    "release:first": "tsx tools/scripts/release.ts --first-release",
+    "release:dry": "tsx tools/scripts/release.ts --dry-run"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.3",
+    "@commitlint/config-conventional": "^20.5.3",
+    "@nx/js": "^22.7.1",
+    "husky": "^9.1.7",
+    "nx": "22.7.1",
+    "tsx": "^4.19.4"
+  }
+}

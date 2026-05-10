@@ -1,0 +1,33 @@
+{  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch",
+      "Bash(.specify/scripts/bash/**)",
+      "Bash(ls**)",
+      "Bash(cat**)",
+      "Bash(find**)",
+      "Bash(grep**)",
+      "Bash(awk**)",
+      "Bash(date**)"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "auto"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "./.claude/statusline.sh",
+    "padding": 1
+  },
+  "extraKnownMarketplaces": {
+    "nx-claude-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "nrwl/nx-ai-agents-config"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "nx@nx-claude-plugins": true
+  }
+}

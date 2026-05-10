@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Nx cache
+.nx/cache
+.nx/workspace-data
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Secrets / local config
+*.local
+
+# Temp
+tmp/

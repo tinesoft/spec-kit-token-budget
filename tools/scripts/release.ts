@@ -35,7 +35,7 @@ const verbose = process.argv.includes('--verbose')
   await releaseChangelog({
     releaseGraph,
     versionData: projectsVersionData,
-    version: workspaceVersion,
+    version,
     firstRelease,
     dryRun,
     verbose,

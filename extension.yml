@@ -29,7 +29,6 @@ provides:
         <artifact>.full.md. Subsequent /speckit.* commands prefer the
         compacted version. Lossless on requirements, decisions, IDs, and
         contracts; strips examples, template boilerplate, and prose padding.
-      aliases: ["speckit.token-budget.compress", "speckit.token-budget.distill"]
 
     - name: "speckit.token-budget.scope"
       file: "commands/scope.md"
@@ -38,7 +37,6 @@ provides:
         (plan | tasks | implement | analyze | checklist), emits a focused
         reading manifest: which files to load, which sections to skip,
         token budget per file, and the running total.
-      aliases: ["speckit.token-budget.brief", "speckit.token-budget.focus"]
 
     - name: "speckit.token-budget.concise"
       file: "commands/concise.md"
@@ -48,7 +46,6 @@ provides:
         file (AGENTS.md, CLAUDE.md, GEMINI.md, .cursor/rules, etc.)
         instructing the agent to suppress narration and produce only the
         artifact diff. State is project-local and reversible.
-      aliases: ["speckit.token-budget.terse", "speckit.token-budget.quiet"]
 
     - name: "speckit.token-budget.usage"
       file: "commands/usage.md"
@@ -56,7 +53,6 @@ provides:
         Show token usage for every SDD artifact in the active feature, the
         projected context window for each upcoming phase, and the savings
         already realized by token-budget (full backups vs current).
-      aliases: ["speckit.token-budget.stats", "speckit.token-budget.report"]
 
   config:
     - name: "token-budget-config.yml"

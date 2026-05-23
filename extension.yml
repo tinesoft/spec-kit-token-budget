@@ -65,31 +65,37 @@ hooks:
     command: "speckit.token-budget.compact"
     optional: true
     prompt: "Compact spec.md to reduce tokens for /speckit.plan?"
+    description: "Compact spec after specification"
 
   after_plan:
     command: "speckit.token-budget.compact"
     optional: true
     prompt: "Compact plan and design docs to reduce tokens for /speckit.tasks?"
+    description: "Compact plan docs after planning"
 
   after_tasks:
     command: "speckit.token-budget.compact"
     optional: true
     prompt: "Compact tasks.md to reduce tokens for /speckit.implement?"
+    description: "Compact tasks after task generation"
 
   before_plan:
     command: "speckit.token-budget.scope"
     optional: true
     prompt: "Scope a focused reading manifest for /speckit.plan?"
+    description: "Scope reading manifest before planning"
 
   before_tasks:
     command: "speckit.token-budget.scope"
     optional: true
     prompt: "Scope a focused reading manifest for /speckit.tasks?"
+    description: "Scope reading manifest before task generation"
 
   before_implement:
     command: "speckit.token-budget.scope"
     optional: true
     prompt: "Scope a focused reading manifest for /speckit.implement?"
+    description: "Scope reading manifest before implementation"
 
 tags:
   - tokens

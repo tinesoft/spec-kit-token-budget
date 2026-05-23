@@ -13,6 +13,8 @@
 #   summarize <orig> <new>           — print "<file>  <before> → <after> tokens (-X.X%)".
 #   has_marker <file>                — exit 0 if <file> contains the compacted marker.
 #   stamp <file> <level>             — append the compacted marker to <file>.
+#   restore <file>                   — copy <file%.md>.full.md back to <file> and delete the backup.
+#                                      Prints "restored", "skipped-no-backup", or "skipped-missing".
 
 set -euo pipefail
 
@@ -73,6 +75,23 @@ summarize() {
   printf '%-32s %7s → %7s tokens  (%+5s%%)\n' "$(basename "$new")" "$before" "$after" "$pct"
 }
 
+restore() {
+  local f="$1"
+  if [[ ! -f "$f" ]]; then
+    echo "skipped-missing"
+    return 0
+  fi
+  local b
+  b="$(backup_path "$f")"
+  if [[ ! -f "$b" ]]; then
+    echo "skipped-no-backup"
+    return 0
+  fi
+  cp "$b" "$f"
+  rm "$b"
+  echo "restored"
+}
+
 has_marker() {
   local f="$1"
   grep -qE '<!--[[:space:]]*token-budget: compacted' "$f" 2>/dev/null
@@ -106,6 +125,7 @@ case "$cmd" in
   summarize)        summarize "$@" ;;
   has_marker)       has_marker "$@" ;;
   stamp)            stamp "$@" ;;
+  restore)          restore "$@" ;;
   *)
     cat >&2 <<EOF
 usage: $(basename "$0") <subcommand> [args]
@@ -114,6 +134,7 @@ usage: $(basename "$0") <subcommand> [args]
   summarize <orig> <new>
   has_marker <file>
   stamp <file> <level>
+  restore <file>
 EOF
     exit 2
     ;;

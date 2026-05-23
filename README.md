@@ -19,7 +19,7 @@ ecosystem tools.
 
 | Layer                                | Inspired by                      | What token-budget provides              |
 |--------------------------------------|----------------------------------|------------------------------------------|
-| **Artifact compaction**              | (novel for SDD)                  | `/speckit.token-budget.compact`         |
+| **Artifact compaction**              | (novel for SDD)                  | `/speckit.token-budget.compact` · `/speckit.token-budget.restore` |
 | **Per-phase reading scope**          | Anthropic cost guide, subagent isolation | `/speckit.token-budget.scope`           |
 | **Output prose suppression**         | [CavemanClaude](https://github.com/JuliusBrussee/caveman), [claude-token-efficient](https://github.com/drona23/claude-token-efficient) | `/speckit.token-budget.concise`         |
 | **CLI output compression**           | [RTK](https://github.com/rtk-ai/rtk)               | `scripts/bash/slim_output.sh` (and defers to `rtk` if installed) |
@@ -95,6 +95,32 @@ research.md       3,200 → 1,180 tokens   (-63.1%)   [backup: research.full.md]
 ─────────────────────────────────────────────────
 total            14,160 → 7,070 tokens   (-50.1%)
 ```
+
+### `/speckit.token-budget.restore [target] [--dry-run]`
+
+Undoes a previous `/compact` run. Copies `<artifact>.full.md` back over the
+compacted file and deletes the backup. The restored file is byte-for-byte
+identical to the original — no cleanup of the compaction marker is needed
+because the marker only lived in the compacted version.
+
+`target` follows the same surface as `/compact`:
+- omit → restore every artifact in the active feature that has a `.full.md` backup.
+- `spec` | `plan` | `tasks` | `research` | … → restore only that artifact.
+- a relative or absolute path → restore that specific file.
+- `--dry-run` → report what would be restored, write nothing.
+
+Example output:
+
+```
+spec.md           2,310 → 4,820 tokens   (+108.7%)   [backup deleted]
+plan.md           3,580 → 6,140 tokens    (+71.5%)   [backup deleted]
+──────────────────────────────────────────────────────────────────────
+total             5,890 → 10,960 tokens   (+86.1%)
+```
+
+Running `/restore` on an artifact with no backup is safe — it skips with a
+warning. To re-compact at a different level after restoring, run
+`/compact --level=<level>`.
 
 ### `/speckit.token-budget.scope [phase] [--include=...] [--exclude=...]`
 

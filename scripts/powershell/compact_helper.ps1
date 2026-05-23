@@ -5,7 +5,7 @@
 
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [ValidateSet("backup_if_needed", "snapshot", "summarize", "has_marker", "stamp")]
+    [ValidateSet("backup_if_needed", "snapshot", "summarize", "has_marker", "stamp", "restore")]
     [string]$Command,
 
     [Parameter(ValueFromRemainingArguments = $true)]
@@ -55,6 +55,15 @@ switch ($Command) {
         $f = $Args[0]
         if (-not (Test-Path $f)) { exit 1 }
         if (Select-String -Path $f -Pattern '<!--\s*token-budget: compacted' -Quiet) { exit 0 } else { exit 1 }
+    }
+    "restore" {
+        $f = $Args[0]
+        if (-not (Test-Path $f)) { Write-Output "skipped-missing"; break }
+        $b = Backup-Path $f
+        if (-not (Test-Path $b)) { Write-Output "skipped-no-backup"; break }
+        Copy-Item $b $f -Force
+        Remove-Item $b
+        Write-Output "restored"
     }
     "stamp" {
         $f = $Args[0]; $level = if ($Args.Count -gt 1) { $Args[1] } else { "medium" }

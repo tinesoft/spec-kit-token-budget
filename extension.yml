@@ -54,6 +54,13 @@ provides:
         projected context window for each upcoming phase, and the savings
         already realized by token-budget (full backups vs current).
 
+    - name: "speckit.token-budget.restore"
+      file: "commands/restore.md"
+      description: >
+        Restore one or more SDD artifacts to their original (pre-compaction)
+        state from the <artifact>.full.md backups created by /compact. Deletes
+        each backup after a successful restore.
+
   config:
     - name: "token-budget-config.yml"
       template: "token-budget-config.template.yml"

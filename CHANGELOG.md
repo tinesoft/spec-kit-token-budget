@@ -1,3 +1,15 @@
+## 1.0.1 (2026-05-23)
+
+### 🩹 Fixes
+
+- remove command aliases to reduce skill count ([798bfcf](https://github.com/tinesoft/spec-kit-token-budget/commit/798bfcf))
+- **config:** ship `token-budget-config.yml` so it is present after install ([4fa6752](https://github.com/tinesoft/spec-kit-token-budget/commit/4fa6752))
+- **hooks:** add missing description field to all hook entries ([6ab70a6](https://github.com/tinesoft/spec-kit-token-budget/commit/6ab70a6))
+
+### ❤️ Thank You
+
+- Tine Kondo @tinesoft
+
 # 1.0.0 (2026-05-10)
 
 ### Features

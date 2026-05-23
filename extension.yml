@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "token-budget"
   name: "Token Budget"
-  version: "1.0.0"
+  version: "1.0.1"
   description: >
     Reduces LLM token consumption across the Spec Kit workflow by compacting
     artifacts in place, scoping per-phase reading to a budget, suppressing

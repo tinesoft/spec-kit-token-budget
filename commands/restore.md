@@ -30,6 +30,9 @@ Restore one or more SDD artifacts in the active feature to their original
    - `spec` | `plan` | `tasks` | `research` | `data-model` | `contracts` |
      `quickstart` | `constitution` → restore only that artifact (or that group,
      in the case of `contracts`).
+     When the target is `constitution`, restore **both**
+     `specs/<feature>/constitution.md` and `.specify/memory/constitution.md`,
+     whichever have a `.full.md` backup. Warn and skip any that do not.
    - a relative or absolute path → restore that specific file.
    - `--dry-run` → report what would be restored, write nothing.
 
@@ -42,7 +45,10 @@ Build the list of artifacts to process:
   and check that a matching `.full.md` backup exists. If not, report
   "no backup found for `<file>`" and stop.
 - If no argument was given, scan the feature directory for `*.full.md` files
-  and derive the corresponding `*.md` path for each.
+  and derive the corresponding `*.md` path for each. Also scan
+  `.specify/memory/` for `constitution.full.md`; if found, add
+  `.specify/memory/constitution.md` to the candidate list (resolve from the
+  project root, not the feature directory).
 - If no backups exist at all, print "No compaction backups found in
   `<feature-dir>`." and stop (not an error).
 

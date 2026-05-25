@@ -25,10 +25,12 @@ provides:
       file: "commands/compact.md"
       description: >
         Compact an SDD artifact in place (spec, plan, research, data-model,
-        contracts, quickstart, tasks, constitution). Original is kept as
-        <artifact>.full.md. Subsequent /speckit.* commands prefer the
-        compacted version. Lossless on requirements, decisions, IDs, and
-        contracts; strips examples, template boilerplate, and prose padding.
+        contracts, quickstart, tasks, constitution). Also compacts
+        .specify/memory/constitution.md (always light level only — no sections
+        dropped). Original is kept as <artifact>.full.md. Subsequent
+        /speckit.* commands prefer the compacted version. Lossless on
+        requirements, decisions, IDs, and contracts; strips examples, template
+        boilerplate, and prose padding.
 
     - name: "speckit.token-budget.scope"
       file: "commands/scope.md"

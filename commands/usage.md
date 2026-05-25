@@ -37,6 +37,10 @@ Standard artifact set: `constitution.md`, `spec.md`, `plan.md`,
 in `contracts/`, plus any extra `.md` files in the feature root (treat
 as auxiliary).
 
+Also check `.specify/memory/constitution.md` at the project root. If
+present, record it separately as a **global artifact** — it is not
+feature-scoped but is loaded on every `/speckit.*` command.
+
 ### Step 3 — Project per-phase budgets
 For each upcoming phase the feature has not yet completed, sum the
 artifacts it would normally consume (from `scope.phase_inputs` in
@@ -52,6 +56,11 @@ separators. Pad with spaces, not tabs.
 ```
 Token Budget — feature: <feature-name>
 Path: specs/<feature-name>/
+
+Global memory (loaded on every /speckit.* command)
+─────────────────────────────────────────────────────────────────
+.specify/memory/constitution.md    1,450          —    baseline
+─────────────────────────────────────────────────────────────────
 
 Artifact                tokens     vs full       status
 ─────────────────────────────────────────────────────────────────

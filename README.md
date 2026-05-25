@@ -84,6 +84,15 @@ Three levels:
   the artifact, and these sections are still recoverable from
   `.full.md`.
 
+**Global memory constitution:** when `constitution` is the target,
+`/compact` also processes `.specify/memory/constitution.md` (the
+project-wide file loaded on every `/speckit.*` command) in addition to
+the feature-scoped `constitution.md`. Compaction of
+`.specify/memory/constitution.md` is **always light level only**,
+regardless of `--level` — no sections are ever dropped, no prose is
+rewritten. The backup `constitution.full.md` is created under
+`.specify/memory/` on the first run.
+
 Aliases: `compress`, `distill` (both translate to the same command).
 
 Example (real numbers from a small SDD project):
@@ -104,7 +113,10 @@ identical to the original — no cleanup of the compaction marker is needed
 because the marker only lived in the compacted version.
 
 `target` follows the same surface as `/compact`:
-- omit → restore every artifact in the active feature that has a `.full.md` backup.
+- omit → restore every artifact in the active feature that has a `.full.md`
+  backup, plus `.specify/memory/constitution.md` if a backup exists there.
+- `constitution` → restore both `specs/<feature>/constitution.md` and
+  `.specify/memory/constitution.md`, whichever have backups.
 - `spec` | `plan` | `tasks` | `research` | … → restore only that artifact.
 - a relative or absolute path → restore that specific file.
 - `--dry-run` → report what would be restored, write nothing.
@@ -166,7 +178,9 @@ Aliases: `terse`, `quiet`.
 Read-only dashboard. Per-artifact token sizes, savings vs the
 `.full.md` backup, projected context budgets for each upcoming phase,
 and only the recommendations that are actually warranted by the
-numbers.
+numbers. Also shows a **Global memory** block for
+`.specify/memory/constitution.md` (loaded on every command) so its
+recurring token cost is always visible.
 
 Aliases: `stats`, `report`.
 
@@ -219,10 +233,11 @@ The four commands target the four leverage points in order of impact:
 
 - **It is not a generic prompt-compression tool.** It only operates on
   spec-kit artifacts and inside `/speckit.*` workflows.
-- **It does not modify your constitution or specification.** The
-  `preserve_id_patterns` and `preserve_sections` rules are
-  deliberately conservative; if you want more aggressive editing of
-  those, do it by hand.
+- **It never paraphrases or drops content from the memory constitution.**
+  `.specify/memory/constitution.md` is always compacted at light level
+  only — only whitespace, decorative separators, and template filler are
+  removed. No principle, constraint, or architectural decision is ever
+  altered.
 - **It does not paraphrase or summarize.** Compaction is removal of
   template scaffolding and prose padding only. Lossless on every
   information-bearing line.

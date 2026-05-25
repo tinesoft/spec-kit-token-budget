@@ -31,6 +31,10 @@ decision, contract, ID, user story, or acceptance criterion**.
    - `spec` | `plan` | `tasks` | `research` | `data-model` | `contracts` |
      `quickstart` | `constitution` → compact only that one (or that group, in
      the case of `contracts`).
+     When the target is `constitution`, compact **both**
+     `specs/<feature>/constitution.md` (if it exists in the active feature)
+     **and** `.specify/memory/constitution.md` (if it exists at the project
+     root). Either may be absent; skip silently if so.
    - a relative or absolute path → compact that file.
    - `--level=light|medium|aggressive` → override the configured level for
      this run only.
@@ -101,6 +105,11 @@ In addition to Steps 2–3:
 - The acceptance test expectations in tasks.md.
 - File path references (anything that looks like a path: `src/...`,
   `./...`, `/...`).
+- `.specify/memory/constitution.md` is always compacted at **light level
+  only**, regardless of the `--level` flag or config. Steps 3 (medium) and
+  4 (aggressive) are skipped for this file. The memory constitution is
+  loaded on every `/speckit.*` invocation; any lossy transformation risks
+  silently dropping a project-wide constraint.
 
 If at any point you are uncertain whether a transformation is lossless, do
 **not** apply it. Compaction must never invent, summarize away, or merge

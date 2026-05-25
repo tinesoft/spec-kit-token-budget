@@ -73,7 +73,11 @@ Rewrites SDD artifacts in place to remove template scaffolding,
 examples, prose padding, and redundant cross-references. **Lossless
 guardrails** mean no requirement (FR-, NFR-, US-, AC-, T-prefixed IDs),
 no decision, no contract, and no fenced schema is ever altered. The
-original is preserved as `<artifact>.full.md`.
+original is preserved as `<artifact>.full.md`. On the first compact run,
+a guard directive is also injected into the project's agent memory file
+(AGENTS.md / CLAUDE.md / etc.) instructing the agent not to read
+`.full.md` files — loading them would cancel the savings. The directive
+is removed automatically when the last backup is deleted by `/restore`.
 
 Three levels:
 - `light` — strip template instructions and trailing examples only.
@@ -132,7 +136,8 @@ total             5,890 → 10,960 tokens   (+86.1%)
 
 Running `/restore` on an artifact with no backup is safe — it skips with a
 warning. To re-compact at a different level after restoring, run
-`/compact --level=<level>`.
+`/compact --level=<level>`. When the last backup in the project is deleted,
+`/restore` automatically removes the backup guard from the agent memory file.
 
 ### `/speckit.token-budget.scope [phase] [--include=...] [--exclude=...]`
 
@@ -253,6 +258,8 @@ for every option, with comments. The big knobs are:
 - `compact.level` — `light`, `medium`, or `aggressive`
 - `compact.preserve_sections` and `compact.preserve_id_patterns` — your
   guardrails
+- `compact.guard_memory_file` — inject/remove the backup guard directive
+  in the agent memory file (default `true`; set `false` to opt out)
 - `scope.max_total_tokens` — soft cap for the per-phase manifest
 - `scope.phase_inputs` — override which artifacts each phase needs
 - `concise.memory_files` — agent memory file priority order

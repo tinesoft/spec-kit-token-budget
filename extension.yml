@@ -27,10 +27,11 @@ provides:
         Compact an SDD artifact in place (spec, plan, research, data-model,
         contracts, quickstart, tasks, constitution). Also compacts
         .specify/memory/constitution.md (always light level only — no sections
-        dropped). Original is kept as <artifact>.full.md. Subsequent
-        /speckit.* commands prefer the compacted version. Lossless on
-        requirements, decisions, IDs, and contracts; strips examples, template
-        boilerplate, and prose padding.
+        dropped). Original is kept as <artifact>.full.md. Injects a guard
+        directive into the agent memory file (AGENTS.md / CLAUDE.md / etc.)
+        on first run so agents do not read the uncompacted backups. Lossless
+        on requirements, decisions, IDs, and contracts; strips examples,
+        template boilerplate, and prose padding.
 
     - name: "speckit.token-budget.scope"
       file: "commands/scope.md"
@@ -61,7 +62,8 @@ provides:
       description: >
         Restore one or more SDD artifacts to their original (pre-compaction)
         state from the <artifact>.full.md backups created by /compact. Deletes
-        each backup after a successful restore.
+        each backup after a successful restore. Removes the backup guard
+        directive from the agent memory file when no backups remain.
 
   config:
     - name: "token-budget-config.yml"

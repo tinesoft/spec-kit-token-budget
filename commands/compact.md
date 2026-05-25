@@ -54,6 +54,42 @@ copy the current artifact to `<artifact>.full.md`. Never overwrite an
 existing backup. The backup is the source of truth for re-compaction at a
 different level later.
 
+### Step 1b — Guard injection (skipped for --dry-run)
+
+Runs only when `keep_full_backup` is true **and** `compact.guard_memory_file`
+is true (the default) **and** this is **not** a `--dry-run` invocation.
+
+1. **Locate the memory file** using the exact same resolution logic as
+   `/speckit.token-budget.concise` Step 1 (AGENTS.md preferred; then
+   agent-specific files in `concise.memory_files` order; create `AGENTS.md`
+   if none exist; prefer `AGENTS.md` when multiple agents are detected).
+   Do not honor `--file=<path>` here — `compact` has no such flag.
+
+2. **Check for the block.** Scan the resolved memory file for
+   `<!-- BEGIN token-budget compact-backups -->`. If found, skip silently
+   (idempotent).
+
+3. **Inject the block.** If not found, append after a blank line:
+
+   ```
+   <!-- BEGIN token-budget compact-backups -->
+
+   ## Token Budget — backup guard
+
+   Files ending in `.full.md` inside `specs/` and `.specify/memory/`
+   (e.g. `spec.full.md`, `plan.full.md`) are pre-compaction backups created
+   by `/speckit.token-budget.compact`. **Do not read them.** They contain the
+   full uncompacted content; loading them cancels the token savings compaction
+   achieved. To revert an artifact to its original state, run
+   `/speckit.token-budget.restore` instead.
+
+   <!-- END token-budget compact-backups -->
+   ```
+
+4. **On `--dry-run`:** do not write. Append to the dry-run report:
+   `[would inject backup guard into <path>]` or
+   `[backup guard already present in <path>]`.
+
 ### Step 2 — Lossless strips (every level)
 - Remove HTML comments left over from templates (`<!-- ... -->`), **except**
   the spec-kit machine-readable markers (e.g. `<!-- INSERT_STATUS_BELOW -->`)

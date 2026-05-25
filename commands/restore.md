@@ -75,6 +75,28 @@ The helper prints one of:
   (race condition). Warn and skip this artifact.
 - `"skipped-missing"` — the compacted file itself is gone. Warn and skip.
 
+### Step 3b — Guard cleanup (skipped for --dry-run)
+
+Runs after Step 3 completes, only when `compact.guard_memory_file` is true.
+
+1. **Scan for remaining backups project-wide** — two locations only:
+   - `specs/**/` — any `*.full.md` in any feature directory
+   - `.specify/memory/` — any `*.full.md`
+
+2. **Decision:**
+   - If any `*.full.md` remains, leave the guard in place. Append to report:
+     `  Backup guard retained in <path> (<N> backup(s) still present).`
+   - If none remain, locate the memory file using the same resolution logic as
+     `compact` Step 1b (AGENTS.md preferred; then `concise.memory_files` order),
+     remove the block between `<!-- BEGIN token-budget compact-backups -->` and
+     `<!-- END token-budget compact-backups -->` inclusive (plus the blank line
+     immediately before the begin marker, to avoid a double blank line). Append
+     to report:
+     `✓ Backup guard removed from <path> (no backups remaining).`
+
+3. **On `--dry-run`:** append `[would remove backup guard from <path>]` or
+   `[backup guard retained — <N> backup(s) in other features]`. No write.
+
 ### Step 4 — Snapshot after
 
 Use `compact_helper.sh snapshot <file>` on the restored file to get the
@@ -111,3 +133,6 @@ The helper script `scripts/bash/compact_helper.sh` provides:
   no backup and skip with a warning.
 - Restore does **not** re-compact. If the user wants to compact again at a
   different level, they should run `/compact --level=<level>` after restoring.
+- When the last backup in the project is deleted, `restore` automatically
+  removes the backup guard from the agent memory file. If backups remain in
+  other features, the guard is kept until those are also restored.

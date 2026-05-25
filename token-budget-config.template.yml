@@ -47,6 +47,11 @@ compact:
   # Keep a backup as <artifact>.full.md the first time an artifact is compacted.
   keep_full_backup: true
 
+  # Inject a guard directive into the project's agent memory file when
+  # backups are created, instructing AI agents not to read .full.md files.
+  # Mirrors the concise-mode directive pattern. Set to false to opt out.
+  guard_memory_file: true
+
 scope:
   # Soft cap for the total reading manifest, in tokens. Token Budget will
   # mark artifacts beyond this budget as "skim" rather than "read".

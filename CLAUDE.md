@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A [Spec Kit](https://github.com/github/spec-kit) extension (`extension.yml`) that adds four slash commands to reduce LLM token consumption in Spec-Driven Development workflows. It is installed by `specify extension add` and picked up by any agent spec-kit supports.
+A [Spec Kit](https://github.com/github/spec-kit) extension (`extension.yml`) that adds five slash commands to reduce LLM token consumption in Spec-Driven Development workflows. It is installed by `specify extension add` and picked up by any agent spec-kit supports.
 
 ## Development workflow
 
@@ -37,7 +37,8 @@ The extension has two layers:
 **1. Slash command prompts (`commands/*.md`)**
 Each file is a full agent instruction prompt with YAML frontmatter. The frontmatter declares `scripts.sh` / `scripts.ps1` pointers to helper scripts. The agent follows the in-prompt algorithm to do content transformation (rewriting artifacts, writing manifests, toggling directives); the scripts handle the deterministic bookkeeping side.
 
-- `compact.md` — artifact compaction in three levels (light / medium / aggressive). Instructs the agent to rewrite in place with hard guardrails: never touch lines with IDs matching `preserve_id_patterns`, never touch `preserve_sections` headings, never touch fenced code blocks. Uses `compact_helper.sh` for backup, token snapshot, and stamp.
+- `compact.md` — artifact compaction in three levels (light / medium / aggressive). Instructs the agent to rewrite in place with hard guardrails: never touch lines with IDs matching `preserve_id_patterns`, never touch `preserve_sections` headings, never touch fenced code blocks. Uses `compact_helper.sh` for backup, token snapshot, and stamp. On first run, also injects a backup guard directive into the agent memory file (same marker pattern as `concise`) so agents do not read `.full.md` files.
+- `restore.md` — undoes a previous compact run. Copies `<artifact>.full.md` back over the compacted file and deletes the backup. Removes the backup guard directive from the agent memory file when no backups remain anywhere in the project.
 - `scope.md` — reads `scope.phase_inputs` from config, builds a per-phase reading manifest at `specs/<feature>/.token-budget/scope-<phase>.md`. Uses `estimate_tokens.sh` to budget each artifact.
 - `concise.md` — locates the right agent memory file (AGENTS.md preferred, then agent-specific files in priority order from `concise.memory_files`), then inserts or removes a directive block between unique HTML comment markers.
 - `usage.md` — read-only dashboard. Calls `estimate_tokens.sh` for each artifact, compares against `.full.md` backups, projects per-phase budgets.
@@ -50,7 +51,7 @@ Pure-bash, dependency-free. Three scripts:
 - `slim_output.sh` — wraps a CLI command and compresses its output using rule-based strategies (`git_status`, `git_log`, `pytest`, `npm_test`, `head_tail`). Defers to the `rtk` binary if it's on `$PATH` and `TOKEN_BUDGET_PREFER_RTK` is not `0`.
 
 **3. Extension manifest (`extension.yml`)**
-Declares the extension id/version, the four commands with their aliases, the config template, and the six lifecycle hooks (`after_specify`, `after_plan`, `after_tasks`, `before_plan`, `before_tasks`, `before_implement`). Spec-kit's `CommandRegistrar` translates this into the right directory structure for whichever agent is installed.
+Declares the extension id/version, the five commands with their aliases, the config template, and the six lifecycle hooks (`after_specify`, `after_plan`, `after_tasks`, `before_plan`, `before_tasks`, `before_implement`). Spec-kit's `CommandRegistrar` translates this into the right directory structure for whichever agent is installed.
 
 **4. Config (`token-budget-config.template.yml`)**
 All tunable knobs with inline comments. The user copies this to `token-budget-config.yml` in the extension directory. Environment overrides use the `SPECKIT_TOKEN_BUDGET_<DOTTED_KEY>` pattern.
@@ -60,6 +61,7 @@ All tunable knobs with inline comments. The user copies this to `token-budget-co
 - `compact` is **lossless**: lines matching `preserve_id_patterns` (FR-, NFR-, T-, US-, AC- prefixed IDs) and headings matching `preserve_sections` must never be modified or removed.
 - Re-compaction always reads from `<artifact>.full.md`, never from the already-compacted file, to prevent lossy compounding.
 - `concise` writes only between `<!-- BEGIN token-budget concise-mode -->` / `<!-- END token-budget concise-mode -->` markers — never inline with user content — so `concise off` is a deterministic block delete.
+- `compact` injects a backup guard directive (`<!-- BEGIN token-budget compact-backups -->` / `<!-- END ... -->`) into the agent memory file on first run; `restore` removes it when the last backup is deleted. Same reversible marker pattern as `concise`.
 - `scope` and `usage` are read-only; they never modify SDD artifacts.
 
 

@@ -66,6 +66,14 @@ tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT
 "$@" >"$tmp" 2>&1 || true   # do not fail this script on the wrapped command's exit code
 
+# Tier 2: caveman-code (AI-enhanced, opt-in). Requires `caveman` on PATH and
+# TOKEN_BUDGET_PREFER_CAVEMAN=1. Disabled by default — LLM round-trip adds
+# latency and API cost; use when RTK is unavailable but richer compression matters.
+if command -v caveman >/dev/null 2>&1 && [[ "${TOKEN_BUDGET_PREFER_CAVEMAN:-0}" == "1" ]]; then
+  caveman -p "Compress this CLI output to essential information only. Preserve all errors, failures, warnings, and final status. Remove verbose noise, progress bars, and redundant lines." < "$tmp"
+  exit 0
+fi
+
 apply() {
   local r="$1"
   case "$r" in

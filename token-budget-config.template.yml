@@ -123,3 +123,8 @@ slim:
     pytest_pass:   { match: "PASSED",      action: keep_fail }
     npm_progress:  { match: "^npm warn ",  action: dedupe }
     long_log:      { match: ".*",          action: head_tail, head: 30, tail: 30 }
+
+  # Set TOKEN_BUDGET_PREFER_CAVEMAN=1 to use caveman-code's LLM-powered
+  # compression as a Tier-2 fallback when rtk is not installed.
+  # Requires `caveman` on PATH and an active API key. Disabled by default.
+  prefer_caveman: false

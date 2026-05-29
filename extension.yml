@@ -18,6 +18,8 @@ requires:
   speckit_version: ">=0.1.0"
   # No external binaries required. tiktoken is used opportunistically for
   # accurate token counts; falls back to a chars/4 heuristic if absent.
+  # rtk and caveman-code are used opportunistically for stronger CLI output
+  # compression in slim_output.sh; built-in bash rules apply otherwise.
 
 provides:
   commands:

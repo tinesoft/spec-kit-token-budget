@@ -116,6 +116,9 @@ token-budget.*), follow these output rules:
 - Do not narrate plans, intentions, or steps. Run them.
 - Do not recap the user's prompt back to them.
 - Do not announce file writes ("I'll create...", "Now writing..."). Just write.
+- Use terse technical fragments, not full sentences. Write "Updated auth.ts" not "I went ahead and updated auth.ts in order to...".
+- No acknowledgment openers ("Sure!", "Of course!", "Great idea!") and no closing remarks ("I hope this helps", "Let me know if you need anything else").
+- No transitional summaries between steps ("Now I'll...", "Next, I will..."). Just execute.
 - After completing the command, output only:
   1. The list of files created or changed, one per line.
   2. Any blocking question or unmet assumption, in one sentence.

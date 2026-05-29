@@ -22,7 +22,7 @@ ecosystem tools.
 | **Artifact compaction**              | (novel for SDD)                  | `/speckit.token-budget.compact` · `/speckit.token-budget.restore` |
 | **Per-phase reading scope**          | Anthropic cost guide, subagent isolation | `/speckit.token-budget.scope`           |
 | **Output prose suppression**         | [CavemanClaude](https://github.com/JuliusBrussee/caveman), [claude-token-efficient](https://github.com/drona23/claude-token-efficient) | `/speckit.token-budget.concise`         |
-| **CLI output compression**           | [RTK](https://github.com/rtk-ai/rtk)               | `scripts/bash/slim_output.sh` (and defers to `rtk` if installed) |
+| **CLI output compression**           | [RTK](https://github.com/rtk-ai/rtk), [caveman-code](https://github.com/JuliusBrussee/caveman-code) | `scripts/bash/slim_output.sh` (defers to `rtk` if installed, or `caveman` if opted in) |
 | **Visibility**                       | (novel for SDD)                  | `/speckit.token-budget.usage`           |
 
 The four commands compose. Compact once after each major phase, scope
@@ -205,6 +205,12 @@ If the [`rtk` binary](https://github.com/rtk-ai/rtk) is on `$PATH`, the
 script delegates to it for better compression. Set
 `TOKEN_BUDGET_PREFER_RTK=0` to force the bash implementation.
 
+If [`caveman`](https://github.com/JuliusBrussee/caveman-code) is on `$PATH`
+and `TOKEN_BUDGET_PREFER_CAVEMAN=1`, it is used as an AI-enhanced Tier 2
+(between RTK and the built-in bash rules). Disabled by default — it makes a
+live LLM call and incurs API cost, but produces richer compression for complex
+outputs when RTK is not installed.
+
 Real-world data point measured during this extension's own development:
 `git status` 440 bytes → 49 bytes (-89%).
 
@@ -265,6 +271,7 @@ for every option, with comments. The big knobs are:
 - `concise.memory_files` — agent memory file priority order
 - `concise.prefer_agent` — tiebreaker when multiple agents are detected
 - `slim.rules` — per-pattern compression behavior
+- `slim.prefer_caveman` — document the `TOKEN_BUDGET_PREFER_CAVEMAN=1` env var to enable caveman-code as Tier 2 in `slim_output.sh`
 
 Environment overrides work too: any
 `SPECKIT_TOKEN_BUDGET_<DOTTED_KEY>=<value>` will override the config
@@ -303,7 +310,9 @@ file.
   and PowerShell variants of every helper script are bundled.
 - **Optional** — `tiktoken` (Python) for exact token counts; chars/4
   fallback otherwise. `rtk` binary on `$PATH` for stronger CLI
-  compression in `slim_output.sh`; built-in rules otherwise.
+  compression in `slim_output.sh`; built-in rules otherwise. `caveman`
+  binary + `TOKEN_BUDGET_PREFER_CAVEMAN=1` enables AI-enhanced Tier 2 in
+  `slim_output.sh` when RTK is not installed.
 
 ## Inspirations
 
@@ -316,6 +325,11 @@ want their effects outside the SDD workflow:
 - **[CavemanClaude](https://github.com/JuliusBrussee/caveman)** — the
   model for `concise`. Goes much further (compresses memory files,
   ships `caveman-shrink` MCP proxy, has its own subagents).
+- **[caveman-code](https://github.com/JuliusBrussee/caveman-code)** — the
+  model for the Tier 2 fallback in `slim_output.sh`. Its `caveman -p` mode
+  provides AI-enhanced CLI output compression; its four-layer compression
+  philosophy (caveman mode, tool budgets, read dedup, RTK) inspired the
+  priority chain in `slim_output.sh`.
 - **[claude-token-efficient](https://github.com/drona23/claude-token-efficient)** —
   inspiration for the directive style of `concise`.
 - **Anthropic's [Manage costs effectively](https://code.claude.com/docs/en/costs)** —
